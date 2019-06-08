@@ -18,7 +18,7 @@ import Kmeans.Init.InitMap;
 import Kmeans.Init.InitReduce;
 
 
-public class Main {
+public class KmeansMain {
 
 	public static void main(String[] args) throws Exception {
 		Init.InitK(4);
@@ -32,8 +32,8 @@ public class Main {
 		jobInit.setMapOutputValueClass(Text.class);
 		jobInit.setOutputKeyClass(NullWritable.class);
 		jobInit.setOutputValueClass(Text.class);
-        FileInputFormat.addInputPath(jobInit, new Path("hdfs://localhost:9000/input/USCensus1990.data.txt"));
-        Path outPath = new Path("hdfs://localhost:9000/lab2/result");
+        FileInputFormat.addInputPath(jobInit, new Path("hdfs://localhost:9000/lab2/input/USCensus1990.data.txt"));
+        Path outPath = new Path("hdfs://localhost:9000/lab2/output/Kmeans_result");
         FileSystem fs = outPath.getFileSystem(conf);
         fs.delete(outPath, true);
         FileOutputFormat.setOutputPath(jobInit, outPath);
@@ -53,8 +53,8 @@ public class Main {
 			jobCLuster.setMapOutputValueClass(Text.class);
 			jobCLuster.setOutputKeyClass(NullWritable.class);
 			jobCLuster.setOutputValueClass(Text.class);
-			FileInputFormat.addInputPath(jobCLuster, new Path("hdfs://localhost:9000/input/USCensus1990.data.txt"));
-			Path outPath2 = new Path("hdfs://localhost:9000/lab2/result");
+			FileInputFormat.addInputPath(jobCLuster, new Path("hdfs://localhost:9000/lab2/input/USCensus1990.data.txt"));
+			Path outPath2 = new Path("hdfs://localhost:9000/lab2/output/Kmeans_result");
 			FileSystem fs2 = outPath2.getFileSystem(conf);
 			fs2.delete(outPath2, true);
 			FileOutputFormat.setOutputPath(jobCLuster, outPath2);
