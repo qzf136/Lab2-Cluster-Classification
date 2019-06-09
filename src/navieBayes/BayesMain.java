@@ -20,7 +20,7 @@ import navieBayes.Bayes.BayesReduce;
 public class BayesMain {
 
 	public static void main(String[] args) throws Exception {
-		AttributePossiblity.init();
+		AttributePossiblity.Attrinit();
 		Configuration conf = new Configuration();
 		Job jobAttrP = Job.getInstance(conf, "attribute possiblity");
 		jobAttrP.setJarByClass(Bayes.class);
@@ -35,12 +35,13 @@ public class BayesMain {
 		FileSystem fs = outPath.getFileSystem(conf);
 		fs.delete(outPath, true);
 		FileOutputFormat.setOutputPath(jobAttrP, outPath);
-		for (int i = 9; i <= 18; i++) {
+		for (int i = 0; i <= 18; i++) {
 			MultipleOutputs.addNamedOutput(jobAttrP, "falseAttr"+i, TextOutputFormat.class, DoubleWritable.class, DoubleWritable.class);
 			MultipleOutputs.addNamedOutput(jobAttrP, "trueAttr"+i, TextOutputFormat.class, DoubleWritable.class, DoubleWritable.class);
 		}
 		jobAttrP.waitForCompletion(true);
 		
+		Bayes.BayesInit();
 		Job jobPredict = Job.getInstance(conf, "predict");
 		jobPredict.setJarByClass(Bayes.class);
 		jobPredict.setMapperClass(BayesMap.class);

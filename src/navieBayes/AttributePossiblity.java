@@ -21,12 +21,14 @@ public class AttributePossiblity {
 	public static int TrueCount = 0;
 	public static int FalseCount = 0;
 	
-	public static void init() {
-		for (int i = 0; i < 10; i++) {
+	public static String format = "%."+2+"f";
+	
+	public static void Attrinit() {
+		for (int i = 0; i <= 18; i++) {
 			falseAttrCount.add(new HashMap<Double, Integer>());
 			falseAttrPossiblity.add(new HashMap<Double, Double>());
 		}
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i <= 18; i++) {
 			trueAttrCount.add(new HashMap<Double, Integer>());
 			trueAttrPossiblity.add(new HashMap<Double, Double>());
 		}
@@ -69,10 +71,10 @@ public class AttributePossiblity {
 				for (Text val : arg1) {
 					String line = val.toString();
 					String[] tokens = line.split(",");
-					for (int i = 9; i <= 18; i++) {
+					for (int i = 1; i <= 18; i++) {
 						double attrVal_all = Double.parseDouble(tokens[i]);
-						Double attrVal = Double.parseDouble(String.format("%.3f", attrVal_all));
-						Map<Double, Integer> attrMap = falseAttrCount.get(i-9);
+						Double attrVal = Double.parseDouble(String.format(format, attrVal_all));
+						Map<Double, Integer> attrMap = falseAttrCount.get(i);
 						if (attrMap.containsKey(attrVal)) {
 							int count = attrMap.get(attrVal);
 							attrMap.put(attrVal, count+1);
@@ -81,22 +83,22 @@ public class AttributePossiblity {
 						}
 					}
 				}
-				for (int i = 0; i < 10; i++) {
+				for (int i = 1; i <= 18; i++) {
 					List<Double> keys = new ArrayList<Double>(falseAttrCount.get(i).keySet());
 			        for (double att_val : keys) {
 			        	double poss = falseAttrCount.get(i).get(att_val)*1.0/FalseCount;
 			        	falseAttrPossiblity.get(i).put(att_val, poss);
-			        	mos.write("falseAttr"+(i+9), att_val, poss);
+			        	mos.write("falseAttr"+i, att_val, poss);
 			        }
 				}
 			} else {
 				for (Text val : arg1) {
 					String line = val.toString();
 					String[] tokens = line.split(",");
-					for (int i = 9; i <= 18; i++) {
+					for (int i = 1; i <= 18; i++) {
 						double attrVal_all = Double.parseDouble(tokens[i]);
-						Double attrVal = Double.parseDouble(String.format("%.3f", attrVal_all));
-						Map<Double, Integer> attrMap = trueAttrCount.get(i-9);
+						Double attrVal = Double.parseDouble(String.format(format, attrVal_all));
+						Map<Double, Integer> attrMap = trueAttrCount.get(i);
 						if (attrMap.containsKey(attrVal)) {
 							int count = attrMap.get(attrVal);
 							attrMap.put(attrVal, count+1);
@@ -105,12 +107,12 @@ public class AttributePossiblity {
 						}
 					}
 				}
-				for (int i = 0; i < 10; i++) {
+				for (int i = 1; i <= 18; i++) {
 					List<Double> keys = new ArrayList<Double>(trueAttrCount.get(i).keySet());
 			        for (double att_val : keys) {
 			        	double poss = trueAttrCount.get(i).get(att_val)*1.0/TrueCount;
 			        	trueAttrPossiblity.get(i).put(att_val, poss);
-			        	mos.write("trueAttr"+(i+9), att_val, poss);
+			        	mos.write("trueAttr"+i, att_val, poss);
 			        }
 				}
 			}

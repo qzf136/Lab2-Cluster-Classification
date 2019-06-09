@@ -10,11 +10,19 @@ import org.apache.hadoop.mapreduce.Reducer;
 
 public class Bayes {
 
-	public static double PTrue = AttributePossiblity.TrueCount*1.0 / AttributePossiblity.TrueCount + AttributePossiblity.FalseCount;
-	public static double PFalse = AttributePossiblity.FalseCount*1.0 / AttributePossiblity.TrueCount + AttributePossiblity.FalseCount;
+	public static double PTrue;
+	public static double PFalse;
 	
 	public static int right = 0;
 	public static int wrong = 0;
+	
+	public static int start = 1;
+	public static int end = 8;
+	
+	public static void BayesInit() {
+		PTrue = AttributePossiblity.TrueCount*1.0 / AttributePossiblity.TrueCount + AttributePossiblity.FalseCount;
+		PFalse = AttributePossiblity.FalseCount*1.0 / AttributePossiblity.TrueCount + AttributePossiblity.FalseCount;
+	}
 	
 	public static class BayesMap extends Mapper<Object, Text, DoubleWritable, DoubleWritable> {
 		@Override
@@ -25,9 +33,9 @@ public class Bayes {
 			String[] tokens = line.split(",");
 			double result = Double.parseDouble(tokens[0]);
 			double predict_true = 1;
-			for (int i = 0; i < 10; i++) {
-				double val_all = Double.parseDouble(tokens[9+i]);
-				double val = Double.parseDouble(String.format("%.3f", val_all));
+			for (int i = start; i <= end; i++) {
+				double val_all = Double.parseDouble(tokens[i]);
+				double val = Double.parseDouble(String.format(AttributePossiblity.format, val_all));
 				Double p = AttributePossiblity.trueAttrPossiblity.get(i).get(val);
 				if (p == null) {
 					p = 1.0 / AttributePossiblity.TrueCount;
@@ -37,9 +45,9 @@ public class Bayes {
 			predict_true *= PTrue;
 			
 			double predict_false = 1;
-			for (int i = 0; i < 10; i++) {
-				double val_all = Double.parseDouble(tokens[9+i]);
-				double val = Double.parseDouble(String.format("%.3f", val_all));
+			for (int i = start; i <= end; i++) {
+				double val_all = Double.parseDouble(tokens[i]);
+				double val = Double.parseDouble(String.format(AttributePossiblity.format, val_all));
 				Double p = AttributePossiblity.falseAttrPossiblity.get(i).get(val);
 				if (p == null) {
 					p = 1.0 / AttributePossiblity.FalseCount;

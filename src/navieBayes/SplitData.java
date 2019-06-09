@@ -49,7 +49,7 @@ public class SplitData {
 				throws IOException, InterruptedException {
 			// TODO Auto-generated method stub
 			int key = arg0.get();
-			if (key >= 0 && key <= 3) {
+			if (key >= 1 && key <= 4) {
 				for (Text val : arg1) {
 					mos.write("train", null, val);
 				}
